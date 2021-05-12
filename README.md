@@ -9,7 +9,7 @@ groups. During your Capistrano deployment, ELBAS will:
 
 - Deploy your code to each running instance connected to a given AutoScale group
 - After deployment, create an AMI from one of the running instances
-- Update the AutoScale group's launch template with the AMI ID
+- Update the AutoScale group's launch template with the AMI ID and default version to latest
 - Delete any outdated AMIs created by previous ELBAS deployments
 
 ## Installation
