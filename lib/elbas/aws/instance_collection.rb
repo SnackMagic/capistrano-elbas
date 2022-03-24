@@ -15,6 +15,10 @@ module Elbas
       def running
         select(&:running?)
       end
+ 
+      def oldest
+        sort_by{_1.aws_counterpart.launch_time}.first
+      end
 
       def each(&block)
         instances.each(&block)

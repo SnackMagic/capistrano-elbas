@@ -32,7 +32,7 @@ namespace :elbas do
         sleep sync_and_wait_delay
       end
 
-      ami_instance = asg.instances.running.sample
+      ami_instance = asg.instances.running.oldest
       info "Creating AMI from instance #{ami_instance.id} (no_reboot = #{no_reboot})..."
       ami = Elbas::AWS::AMI.create ami_instance, no_reboot
       info  "Created AMI: #{ami.id}"
