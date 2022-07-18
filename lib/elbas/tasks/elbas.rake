@@ -32,7 +32,7 @@ namespace :elbas do
         sleep sync_and_wait_delay
       end
 
-      ami_instance = asg.instances.running.oldest
+      ami_instance = asg.instances.oldest
       info "Creating AMI from instance #{ami_instance.id} (no_reboot = #{no_reboot})..."
       ami = Elbas::AWS::AMI.create ami_instance, no_reboot
       info  "Created AMI: #{ami.id}"
@@ -65,5 +65,14 @@ namespace :elbas do
       end
     end
     info "Deployment complete!"
+  end
+
+  task :list do
+    fetch(:aws_autoscale_group_names).each do |aws_autoscale_group_name|
+      on roles([:web, :app]) do
+        info "Auto Scaling Group: #{aws_autoscale_group_name}"
+        asg = Elbas::AWS::AutoscaleGroup.new aws_autoscale_group_name
+      end
+    end
   end
 end
