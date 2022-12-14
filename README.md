@@ -56,6 +56,7 @@ If you set `elbas_no_reboot_on_ami_creation = true` then you may want to instruc
 set :elbas_sync_and_wait, true        # Default: false
 set :elbas_sync_and_wait_cmd, 'sync'  # Default: sync
 set :elbas_sync_and_wait_delay, 5     # Default: 5 seconds
+set :sync_and_wait_as_sudo, false     # Default: true
 ```
 
 ## Usage
