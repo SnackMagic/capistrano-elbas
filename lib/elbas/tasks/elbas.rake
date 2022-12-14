@@ -61,8 +61,14 @@ namespace :elbas do
 
       keep = fetch(:elbas_keep_amis) || 5
       info "Cleaning up old AMIs (keeping #{keep})..."
-      if ami.ancestors.count > keep
-        amis = ami.ancestors.drop(keep)
+
+      ami_ancestors_count = ami.ancestors.count
+      if ami_ancestors_count > keep
+        to_remove = ami_ancestors_count - keep + 1
+
+        amis = ami.ancestors.sort_by { |ancestor| ancestor.created_at }.shift(to_remove)
+        # amis = ami.ancestors.drop(keep)
+
         amis.each do |ancestor|
           info "Deleting AMI: #{ancestor.id}"
           ancestor.delete
