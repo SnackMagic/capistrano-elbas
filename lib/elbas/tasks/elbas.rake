@@ -27,7 +27,12 @@ namespace :elbas do
 
         info "Calling #{sync_and_wait_cmd} and waiting #{sync_and_wait_delay} seconds..."
         on roles([:web, :app]) do
-          execute :sudo, sync_and_wait_cmd
+          sync_and_wait_as_sudo = fetch(:sync_and_wait_as_sudo, true)
+          if sync_and_wait_as_sudo
+            execute :sudo, sync_and_wait_cmd
+          else
+            execute sync_and_wait_cmd
+          end
         end
         sleep sync_and_wait_delay
       end
