@@ -17,7 +17,7 @@ module Elbas
       end
 
       def oldest
-        sort_by{_1.aws_counterpart.launch_time}.select(&:running?).first
+        sort_by { |x| x.aws_counterpart.launch_time }.select(&:running?).first
       end
 
       def each(&block)
@@ -25,15 +25,16 @@ module Elbas
       end
 
       private
-        def aws_namespace
-          ::Aws::EC2
-        end
 
-        def query_instances_by_ids(ids)
-          aws_client
-            .describe_instances(instance_ids: @ids)
-            .reservations.flat_map(&:instances)
-        end
+      def aws_namespace
+        ::Aws::EC2
+      end
+
+      def query_instances_by_ids(ids)
+        aws_client
+          .describe_instances(instance_ids: @ids)
+          .reservations.flat_map(&:instances)
+      end
     end
   end
 end
