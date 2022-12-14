@@ -66,7 +66,9 @@ namespace :elbas do
       if ami_ancestors_count > keep
         to_remove = ami_ancestors_count - keep + 1
 
-        amis = ami.ancestors.sort_by { |ancestor| ancestor.created_at }.shift(to_remove)
+        amis = ami.ancestors.sort_by { |ancestor| ancestor.created_at }
+        info "Existing AMIs: #{amis.map(&:id).join(", ")}"
+        amis = amis.shift(to_remove)
         # amis = ami.ancestors.drop(keep)
 
         amis.each do |ancestor|
