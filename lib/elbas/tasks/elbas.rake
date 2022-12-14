@@ -1,4 +1,4 @@
-require 'elbas'
+require "elbas"
 include Elbas::Logger
 
 namespace :elbas do
@@ -40,16 +40,19 @@ namespace :elbas do
       ami_instance = asg.instances.oldest
       info "Creating AMI from instance #{ami_instance.id} (no_reboot = #{no_reboot})..."
       ami = Elbas::AWS::AMI.create ami_instance, no_reboot
-      info  "Created AMI: #{ami.id}"
+      info "Created AMI: #{ami.id}"
+
+      info "Tagging AMI: Name = #{asg.name}"
+      ami.tag "Name", asg.name
 
       info "Tagging AMI: ELBAS-Deploy-group = #{asg.name}"
-      ami.tag 'ELBAS-Deploy-group', asg.name
+      ami.tag "ELBAS-Deploy-group", asg.name
 
       info "Tagging AMI: ELBAS-Deploy-revision = #{release_version}"
-      ami.tag 'ELBAS-Deploy-revision', release_version
-      
+      ami.tag "ELBAS-Deploy-revision", release_version
+
       info "Tagging AMI: ELBAS-Deploy-id = #{release_timestamp}"
-      ami.tag 'ELBAS-Deploy-id', release_timestamp
+      ami.tag "ELBAS-Deploy-id", release_timestamp
 
       launch_template = asg.launch_template
       info "Updating launch template #{launch_template.name} with the new AMI..."
